@@ -15,7 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
-
+//clases especiales,se usan cuando se quieren trabajar con valores limitados,
+// como los colores del semaforo
 enum class Light {
     Red, Yellow, Green
 }
