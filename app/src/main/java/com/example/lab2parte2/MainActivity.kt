@@ -3,45 +3,92 @@ package com.example.lab2parte2
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.lab2parte2.ui.theme.Lab2Parte2Theme
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+
+
+enum class Light {
+    Red, Yellow, Green
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            Lab2Parte2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            MaterialTheme {
+                TrafficLight()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun TrafficLight() {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Lab2Parte2Theme {
-        Greeting("Android")
+    var currentLight by remember { mutableStateOf(Light.Red) }
+
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            currentLight = Light.Red
+            delay(2000)
+
+            currentLight = Light.Green
+            delay(2000)
+
+            currentLight = Light.Yellow
+            delay(1000)
+        }
     }
+
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        LightCircle(
+            isActive = currentLight == Light.Red,
+            activeColor = Color.Red
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LightCircle(
+            isActive = currentLight == Light.Yellow,
+            activeColor = Color.Yellow
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LightCircle(
+            isActive = currentLight == Light.Green,
+            activeColor = Color.Green
+        )
+    }
+} // q
+
+@Composable
+fun LightCircle(
+    isActive: Boolean,
+    activeColor: Color
+) {
+    Box(
+        modifier = Modifier
+            .size(80.dp)
+            .clip(CircleShape)
+            .background(
+                if (isActive) activeColor else Color.Gray
+            )
+    )
 }
