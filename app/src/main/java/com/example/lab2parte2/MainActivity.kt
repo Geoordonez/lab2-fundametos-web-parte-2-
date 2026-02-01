@@ -36,7 +36,7 @@ fun TrafficLight() {
 
     var currentLight by remember { mutableStateOf(Light.Red) }
 
-
+    // esta es la logica del semaforo
     LaunchedEffect(Unit) {
         while (true) {
             currentLight = Light.Red
@@ -52,10 +52,12 @@ fun TrafficLight() {
 
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black), // <- Fondo negro
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ){
 
         LightCircle(
             isActive = currentLight == Light.Red,
@@ -85,7 +87,7 @@ fun LightCircle(
 ) {
     Box(
         modifier = Modifier
-            .size(80.dp)
+            .size(120.dp)
             .clip(CircleShape)
             .background(
                 if (isActive) activeColor else Color.Gray
